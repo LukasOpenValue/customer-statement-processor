@@ -26,9 +26,13 @@ public class CsvParser {
                 .get()
                 .parse(new FileReader(file))) {
             for (CSVRecord record : csvParser) {
-                Statement statement = mapCsvRecord(record);
-                logger.debug("Processed statement: {}", statement.reference());
-                statements.add(statement);
+                try {
+                    Statement statement = mapCsvRecord(record);
+                    logger.debug("Processed statement: {}", statement.reference());
+                    statements.add(statement);
+                } catch (IllegalArgumentException e) {
+                    logger.warn("Couldn't map csv record {}", record.toString());
+                }
             }
         } catch (Exception e) {
             logger.error("Error processing CSV file", e);
