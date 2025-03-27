@@ -17,9 +17,8 @@ import java.util.Set;
 public class ValidatorFacade implements ValidatorService {
     Logger logger = LoggerFactory.getLogger(ValidatorFacade.class);
 
+    private static final Set<Long> TRANSACTION_REFERENCES = new HashSet<>();
     private final ErrorLogger errorLogger;
-    private final Set<Long> transactionReferences = new HashSet<>();
-    private String fileName;
 
     @Autowired
     public ValidatorFacade(ErrorLogger errorLogger) {
@@ -34,16 +33,16 @@ public class ValidatorFacade implements ValidatorService {
     }
 
     private void validateStatement(Statement statement) {
-        if (!transactionReferences.add(statement.reference())) {
+        if (!TRANSACTION_REFERENCES.add(statement.reference())) {
             logger.error("Duplicate statement reference: {}", statement.reference());
-            errorLogger.logError("Duplicate statement reference.", statement, fileName);
+            errorLogger.logError("Duplicate statement reference.", statement);
         }
 
         BigDecimal expectedEndBalance = statement.startBalance().add(statement.mutation());
         if (!expectedEndBalance.equals(statement.endBalance())) {
             logger.error("Invalid end balance for statement {}: expected {}, found {}",
                     statement.reference(), expectedEndBalance, statement.endBalance());
-            errorLogger.logError("Invalid end balance.", statement, fileName);
+            errorLogger.logError("Invalid end balance.", statement);
         }
     }
 }

@@ -23,7 +23,7 @@ public class ErrorLogger {
     @Value("${errorDirectory}")
     private String errorDirectory;
 
-    public void logError(String message, Statement statement, String transactionFileName) {
+    public void logError(String message, Statement statement) {
         String date = LocalDate.now().format(DateTimeFormatter.ISO_DATE);
         String errorFileName = date + "-validation-errors.log";
         File errorFile = new File(errorDirectory, errorFileName);
@@ -32,7 +32,7 @@ public class ErrorLogger {
             Files.createDirectories(Paths.get(errorDirectory));
 
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(errorFile, true))) {
-                writer.write(buildErrorMessage(message, statement, transactionFileName));
+                writer.write(buildErrorMessage(message, statement));
                 writer.newLine();
             }
         } catch (IOException e) {
@@ -40,18 +40,14 @@ public class ErrorLogger {
         }
     }
 
-    private String buildErrorMessage(String message, Statement statement, String fileName) {
+    private String buildErrorMessage(String message, Statement statement) {
         return String.format(
                 "ERROR: %s%n" +
-                        "File: %s%n" +
                         "Transaction Reference: %d%n" +
-                        "Account Number: %s%n" +
                         "Description: %s%n" +
                         "-----------------------------",
                 message,
-                fileName,
                 statement.reference(),
-                statement.accountNumber(),
                 statement.description()
         );
     }

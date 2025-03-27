@@ -39,6 +39,7 @@ out/
 
 # Log file
 *.log
+!src/test/resources/example-validation-errors.log
 
 # BlueJ files
 *.ctxt
