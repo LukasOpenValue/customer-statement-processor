@@ -1,5 +1,6 @@
 package nl.openvalue.CustomerStatementProcessor.validator.impl;
 
+import nl.openvalue.CustomerStatementProcessor.processor.XmlParser;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -14,23 +15,23 @@ import java.time.format.DateTimeFormatter;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest
-class CsvValidatorTest {
+class XmlParserTest {
 
     private static final String RESOURCES_FOLDER = "./src/test/resources/";
 
     @Autowired
-    private CsvValidator csvValidator;
+    private XmlParser xmlParser;
 
     @Test
-    void validateFile_valid() {
-        csvValidator.validateFile(new File(RESOURCES_FOLDER + "valid.csv"));
+    void validateStatements_valid() {
+        xmlParser.parseXmlFile(new File(RESOURCES_FOLDER + "valid.csv"));
         String date = LocalDate.now().format(DateTimeFormatter.ISO_DATE);
         assertThat(new File(RESOURCES_FOLDER + "error/" + date + "-validation-errors.log")).doesNotExist();
     }
 
     @Test
-    void validateFile_invalid() {
-        csvValidator.validateFile(new File(RESOURCES_FOLDER + "invalid.csv"));
+    void validateStatements_invalid() {
+        xmlParser.parseXmlFile(new File(RESOURCES_FOLDER + "invalid.csv"));
         String date = LocalDate.now().format(DateTimeFormatter.ISO_DATE);
         assertThat(new File(RESOURCES_FOLDER + "error/" + date + "-validation-errors.log")).exists();
     }

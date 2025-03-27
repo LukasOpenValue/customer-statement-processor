@@ -1,0 +1,49 @@
+package nl.openvalue.CustomerStatementProcessor.processor;
+
+import nl.openvalue.CustomerStatementProcessor.model.Statement;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
+import java.io.File;
+import java.io.FileReader;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+public class CsvParser {
+    Logger logger = LoggerFactory.getLogger(CsvParser.class);
+
+    public List<Statement> parseCsvFile(File file) {
+        List<Statement> statements = new ArrayList<>();
+        try (CSVParser csvParser = CSVFormat.RFC4180.builder()
+                .setHeader()
+                .setSkipHeaderRecord(true)
+                .get()
+                .parse(new FileReader(file))) {
+            for (CSVRecord record : csvParser) {
+                Statement statement = mapCsvRecord(record);
+                logger.debug("Processed statement: {}", statement.reference());
+                statements.add(statement);
+            }
+        } catch (Exception e) {
+            logger.error("Error processing CSV file", e);
+        }
+        return statements;
+    }
+
+    private Statement mapCsvRecord(CSVRecord record) {
+        return new Statement(
+                Long.parseLong(record.get("Reference")),
+                record.get("Account Number"),
+                record.get("Description"),
+                new BigDecimal(record.get("Start Balance")),
+                new BigDecimal(record.get("Mutation")),
+                new BigDecimal(record.get("End Balance"))
+        );
+    }
+}

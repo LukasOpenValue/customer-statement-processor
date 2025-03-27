@@ -1,9 +1,10 @@
 package nl.openvalue.CustomerStatementProcessor.validator.api;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import nl.openvalue.CustomerStatementProcessor.model.Statement;
+
+import java.util.List;
 
 public interface ValidatorService {
 
-    void validateFile(File file) throws FileNotFoundException;
+    void validateStatements(List<Statement> statements);
 }
