@@ -27,6 +27,7 @@ public class FileProcessingRest {
 
     @PostMapping(value = "/upload/csv", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> uploadCsv(@RequestParam("file") MultipartFile file) {
+        logger.info("Triggering new file processing via the csv REST endpoint.");
         if (file.isEmpty()) {
             return ResponseEntity.badRequest().body("CSV file is empty.");
         }
@@ -42,6 +43,7 @@ public class FileProcessingRest {
 
     @PostMapping(value = "/upload/xml", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> uploadXml(@RequestParam("file") MultipartFile file) {
+        logger.info("Triggering new file processing via the xml REST endpoint.");
         if (file.isEmpty()) {
             return ResponseEntity.badRequest().body("XML file is empty.");
         }

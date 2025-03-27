@@ -47,7 +47,7 @@ public class FileProcessor {
     }
 
     public void processFiles() {
-        File inputDir = new File(inputDirectory);
+        File inputDir = new File(System.getProperty("user.dir"), inputDirectory);
         if (!inputDir.exists()) {
             logger.warn("Input directory does not exist: {}", inputDir.getAbsolutePath());
             return;
@@ -64,31 +64,37 @@ public class FileProcessor {
             try {
                 if (file.getName().endsWith(".csv")) {
                     statements.addAll(csvParser.parseFile(file));
-                    FileUtils.moveFile(file, FileUtils.getFile(processedDirectory));
+                    moveFile(file, processedDirectory);
                 } else if (file.getName().endsWith(".xml")) {
                     statements.addAll(xmlParser.parseFile(file));
-                    FileUtils.moveFile(file, FileUtils.getFile(processedDirectory));
+                    moveFile(file, processedDirectory);
                 } else {
                     logger.warn("Unsupported file format: {}", file.getName());
-                    FileUtils.moveFile(file, FileUtils.getFile(errorDirectory));
+                    moveFile(file, errorDirectory);
                 }
             } catch (Exception e) {
                 logger.error("Error processing file: {}", file.getName(), e);
                 try {
-                    FileUtils.moveFile(file, FileUtils.getFile(errorDirectory));
+                    moveFile(file, errorDirectory);
                 } catch (IOException ex) {
                     logger.error("Error moving file to error directory {}", file.getName(), e);
                 }
             }
         }
         validatorService.validateStatements(statements);
+        logger.info("Finished processing files.");
     }
 
     private void processFile(MultipartFile file, FileParser fileParser) throws IOException {
-        File fileToProcess = new File(inputDirectory + File.separator + file.getOriginalFilename());
+        File fileToProcess = new File(System.getProperty("user.dir") + inputDirectory + File.separator + file.getOriginalFilename());
         file.transferTo(fileToProcess);
         List<Statement> statements = new ArrayList<>(fileParser.parseFile(fileToProcess));
-        FileUtils.moveFile(fileToProcess, FileUtils.getFile(processedDirectory));
+        moveFile(fileToProcess, processedDirectory);
         validatorService.validateStatements(statements);
+        logger.info("Finished processing file.");
+    }
+
+    private void moveFile(File file, String targetDirectory) throws IOException {
+        FileUtils.moveFile(file, FileUtils.getFile(System.getProperty("user.dir") + File.separator + targetDirectory + File.separator + file.getName()));
     }
 }

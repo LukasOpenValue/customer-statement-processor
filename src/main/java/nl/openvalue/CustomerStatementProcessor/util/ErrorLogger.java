@@ -1,6 +1,7 @@
 package nl.openvalue.CustomerStatementProcessor.util;
 
 import nl.openvalue.CustomerStatementProcessor.model.Statement;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,10 +27,10 @@ public class ErrorLogger {
     public void logError(String message, Statement statement) {
         String date = LocalDate.now().format(DateTimeFormatter.ISO_DATE);
         String errorFileName = date + "-validation-errors.log";
-        File errorFile = new File(errorDirectory, errorFileName);
+        File errorFile = FileUtils.getFile(System.getProperty("user.dir"), errorDirectory, errorFileName);
 
         try {
-            Files.createDirectories(Paths.get(errorDirectory));
+            Files.createDirectories(Paths.get(System.getProperty("user.dir"), errorDirectory));
 
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(errorFile, true))) {
                 writer.write(buildErrorMessage(message, statement));
