@@ -7,10 +7,10 @@ import java.math.BigDecimal;
 
 @JacksonXmlRootElement(localName = "record")
 public record Statement(
-        @JacksonXmlProperty(localName = "transactionReference") Long transactionReference,
+        @JacksonXmlProperty(localName = "reference") Long reference,
+        @JacksonXmlProperty(localName = "description") String description,
         @JacksonXmlProperty(localName = "accountNumber") String accountNumber,
         @JacksonXmlProperty(localName = "startBalance") BigDecimal startBalance,
         @JacksonXmlProperty(localName = "mutation") BigDecimal mutation,
-        @JacksonXmlProperty(localName = "endBalance") BigDecimal endBalance,
-        @JacksonXmlProperty(localName = "description") String description
+        @JacksonXmlProperty(localName = "endBalance") BigDecimal endBalance
 ) {}
