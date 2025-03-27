@@ -35,8 +35,6 @@ public class ErrorLogger {
                 writer.write(buildErrorMessage(message, statement, transactionFileName));
                 writer.newLine();
             }
-
-            logger.info("Logged error: {}", message);
         } catch (IOException e) {
             logger.error("Failed to write error to file: {}", errorFile.getAbsolutePath(), e);
         }

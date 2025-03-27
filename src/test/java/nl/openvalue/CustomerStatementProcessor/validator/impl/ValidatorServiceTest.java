@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -20,7 +19,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @SpringBootTest
 public class ValidatorServiceTest {
 
-    private static final String RESOURCES_FOLDER = "./src/test/resources/";
+    private static final String RESOURCES_FOLDER = "src/test/resources/";
 
     @Autowired
     private ValidatorFacade validatorFacade;
@@ -29,19 +28,19 @@ public class ValidatorServiceTest {
     void validateStatements_valid() {
         validatorFacade.validateStatements(buildValidStatements());
         String date = LocalDate.now().format(DateTimeFormatter.ISO_DATE);
-        assertThat(new File(RESOURCES_FOLDER + "error/" + date + "-validation-errors.log")).doesNotExist();
+        assertThat(FileUtils.getFile(RESOURCES_FOLDER + "error/" + date + "-validation-errors.log")).doesNotExist();
     }
 
     @Test
     void validateStatements_invalid() {
         validatorFacade.validateStatements(buildInvalidStatements());
         String date = LocalDate.now().format(DateTimeFormatter.ISO_DATE);
-        assertThat(new File(RESOURCES_FOLDER + "error/" + date + "-validation-errors.log")).exists();
+        assertThat(FileUtils.getFile(RESOURCES_FOLDER + "error/" + date + "-validation-errors.log")).exists();
     }
 
     @AfterEach
     void deleteTestFiles() throws IOException {
-        FileUtils.deleteDirectory(new File(RESOURCES_FOLDER + "error"));
+        FileUtils.deleteDirectory(FileUtils.getFile(RESOURCES_FOLDER + "error"));
     }
 
     private List<Statement> buildValidStatements() {

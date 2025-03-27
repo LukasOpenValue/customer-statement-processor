@@ -1,12 +1,12 @@
 package nl.openvalue.CustomerStatementProcessor.validator.impl;
 
 import nl.openvalue.CustomerStatementProcessor.model.Statement;
-import nl.openvalue.CustomerStatementProcessor.processor.XmlParser;
+import nl.openvalue.CustomerStatementProcessor.parser.impl.XmlParser;
+import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.io.File;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -22,7 +22,7 @@ class XmlParserTest {
 
     @Test
     void parseValidXml() {
-        List<Statement> statements = xmlParser.parseXmlFile(new File(RESOURCES_FOLDER + "valid.xml"));
+        List<Statement> statements = xmlParser.parseFile(FileUtils.getFile(RESOURCES_FOLDER + "valid.xml"));
         assertThat(statements).isNotNull();
         assertThat(statements.size()).isEqualTo(2);
         assertThat(statements.getFirst())
@@ -35,7 +35,7 @@ class XmlParserTest {
 
     @Test
     void parseInvalidXml() {
-        List<Statement> statements = xmlParser.parseXmlFile(new File(RESOURCES_FOLDER + "invalid.xml"));
+        List<Statement> statements = xmlParser.parseFile(FileUtils.getFile(RESOURCES_FOLDER + "invalid.xml"));
         assertThat(statements).isNotNull();
         assertThat(statements.size()).isEqualTo(0);
     }

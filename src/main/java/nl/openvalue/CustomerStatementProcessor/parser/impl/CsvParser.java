@@ -1,6 +1,7 @@
-package nl.openvalue.CustomerStatementProcessor.processor;
+package nl.openvalue.CustomerStatementProcessor.parser.impl;
 
 import nl.openvalue.CustomerStatementProcessor.model.Statement;
+import nl.openvalue.CustomerStatementProcessor.parser.api.FileParser;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -15,10 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class CsvParser {
+public class CsvParser implements FileParser {
     Logger logger = LoggerFactory.getLogger(CsvParser.class);
 
-    public List<Statement> parseCsvFile(File file) {
+    @Override
+    public List<Statement> parseFile(File file) {
         List<Statement> statements = new ArrayList<>();
         try (CSVParser csvParser = CSVFormat.RFC4180.builder()
                 .setHeader()

@@ -1,12 +1,12 @@
 package nl.openvalue.CustomerStatementProcessor.validator.impl;
 
 import nl.openvalue.CustomerStatementProcessor.model.Statement;
-import nl.openvalue.CustomerStatementProcessor.processor.CsvParser;
+import nl.openvalue.CustomerStatementProcessor.parser.impl.CsvParser;
+import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.io.File;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -22,7 +22,7 @@ class CsvParserTest {
 
     @Test
     void parseValidCsv() {
-        List<Statement> statements = csvParser.parseCsvFile(new File(RESOURCES_FOLDER + "valid.csv"));
+        List<Statement> statements = csvParser.parseFile(FileUtils.getFile(RESOURCES_FOLDER + "valid.csv"));
         assertThat(statements).isNotNull();
         assertThat(statements.size()).isEqualTo(3);
         assertThat(statements.getFirst())
@@ -35,7 +35,7 @@ class CsvParserTest {
 
     @Test
     void parseInvalidCsv() {
-        List<Statement> statements = csvParser.parseCsvFile(new File(RESOURCES_FOLDER + "invalid.csv"));
+        List<Statement> statements = csvParser.parseFile(FileUtils.getFile(RESOURCES_FOLDER + "invalid.csv"));
         assertThat(statements).isNotNull();
         assertThat(statements.size()).isEqualTo(1);
         assertThat(statements.getFirst())
