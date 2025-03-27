@@ -18,13 +18,13 @@ import java.time.format.DateTimeFormatter;
 
 
 @Service
-public class ErrorLogger {
-    Logger logger = LoggerFactory.getLogger(ErrorLogger.class);
+public class ErrorFileHelper {
+    Logger logger = LoggerFactory.getLogger(ErrorFileHelper.class);
 
     @Value("${errorDirectory}")
     private String errorDirectory;
 
-    public void logError(String message, Statement statement) {
+    public void printErrorToFile(String message, Statement statement) {
         String date = LocalDate.now().format(DateTimeFormatter.ISO_DATE);
         String errorFileName = date + "-validation-errors.log";
         File errorFile = FileUtils.getFile(System.getProperty("user.dir"), errorDirectory, errorFileName);

@@ -1,7 +1,7 @@
 package nl.openvalue.CustomerStatementProcessor.validator.impl;
 
 import nl.openvalue.CustomerStatementProcessor.model.Statement;
-import nl.openvalue.CustomerStatementProcessor.util.ErrorLogger;
+import nl.openvalue.CustomerStatementProcessor.util.ErrorFileHelper;
 import nl.openvalue.CustomerStatementProcessor.validator.api.ValidatorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,11 +18,11 @@ public class ValidatorFacade implements ValidatorService {
     Logger logger = LoggerFactory.getLogger(ValidatorFacade.class);
 
     private static final Set<Long> TRANSACTION_REFERENCES = new HashSet<>();
-    private final ErrorLogger errorLogger;
+    private final ErrorFileHelper errorFileHelper;
 
     @Autowired
-    public ValidatorFacade(ErrorLogger errorLogger) {
-        this.errorLogger = errorLogger;
+    public ValidatorFacade(ErrorFileHelper errorFileHelper) {
+        this.errorFileHelper = errorFileHelper;
     }
 
     @Override
@@ -35,14 +35,14 @@ public class ValidatorFacade implements ValidatorService {
     private void validateStatement(Statement statement) {
         if (!TRANSACTION_REFERENCES.add(statement.reference())) {
             logger.error("Duplicate statement reference: {}", statement.reference());
-            errorLogger.logError("Duplicate statement reference.", statement);
+            errorFileHelper.printErrorToFile("Duplicate statement reference.", statement);
         }
 
         BigDecimal expectedEndBalance = statement.startBalance().add(statement.mutation());
         if (!expectedEndBalance.equals(statement.endBalance())) {
             logger.error("Invalid end balance for statement {}: expected {}, found {}",
                     statement.reference(), expectedEndBalance, statement.endBalance());
-            errorLogger.logError("Invalid end balance.", statement);
+            errorFileHelper.printErrorToFile("Invalid end balance.", statement);
         }
     }
 }
