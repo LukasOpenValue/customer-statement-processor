@@ -1,13 +1,11 @@
 package nl.openvalue.CustomerStatementProcessor.model;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import java.math.BigDecimal;
 
-@JacksonXmlRootElement(localName = "record")
 public record Statement(
-        @JacksonXmlProperty(localName = "reference") Long reference,
+        @JacksonXmlProperty(localName = "reference", isAttribute = true) Long reference,
         @JacksonXmlProperty(localName = "accountNumber") String accountNumber,
         @JacksonXmlProperty(localName = "description") String description,
         @JacksonXmlProperty(localName = "startBalance") BigDecimal startBalance,

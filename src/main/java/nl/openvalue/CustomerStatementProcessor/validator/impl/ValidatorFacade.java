@@ -1,6 +1,7 @@
 package nl.openvalue.CustomerStatementProcessor.validator.impl;
 
 import nl.openvalue.CustomerStatementProcessor.model.Statement;
+import nl.openvalue.CustomerStatementProcessor.util.ErrorLogger;
 import nl.openvalue.CustomerStatementProcessor.validator.api.ValidatorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

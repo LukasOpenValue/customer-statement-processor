@@ -1,4 +1,4 @@
-package nl.openvalue.CustomerStatementProcessor.validator.impl;
+package nl.openvalue.CustomerStatementProcessor.util;
 
 import nl.openvalue.CustomerStatementProcessor.model.Statement;
 import org.slf4j.Logger;

@@ -18,9 +18,8 @@ public class XmlParser {
     public List<Statement> parseXmlFile(File file) {
         List<Statement> statements = new ArrayList<>();
         try {
-            Statement statement = xmlMapper.readValue(file, Statement.class);
-            logger.debug("Processed statement: {}", statement.reference());
-            statements.add(statement);
+            statements = xmlMapper.readValue(file, xmlMapper.getTypeFactory().constructCollectionType(List.class, Statement.class));
+            logger.debug("Processed XML file: {}", file.getAbsolutePath());
         } catch (Exception e) {
             logger.error("Error processing XML file", e);
         }

@@ -21,7 +21,7 @@ class CsvParserTest {
     private CsvParser csvParser;
 
     @Test
-    void validateStatements_valid() {
+    void parseValidCsv() {
         List<Statement> statements = csvParser.parseCsvFile(new File(RESOURCES_FOLDER + "valid.csv"));
         assertThat(statements).isNotNull();
         assertThat(statements.size()).isEqualTo(3);
@@ -34,7 +34,7 @@ class CsvParserTest {
     }
 
     @Test
-    void validateStatements_invalidRecords() {
+    void parseInvalidCsv() {
         List<Statement> statements = csvParser.parseCsvFile(new File(RESOURCES_FOLDER + "invalid.csv"));
         assertThat(statements).isNotNull();
         assertThat(statements.size()).isEqualTo(1);
