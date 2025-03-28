@@ -1,0 +1,21 @@
+<records>
+    <record>
+        <accountNumber>NL90ABNA0585647886</accountNumber>
+        <description>Flowers for Richard Bakker</description>
+        <endBalance>109.53</endBalance>
+    </record>
+    <record reference="test">
+        <accountNumber>NL93ABNA0585619023</accountNumber>
+        <description>Candy from Vincent de Vries</description>
+        <startBalance>not a number</startBalance>
+        <mutation>-939</mutation>
+        <endBalance>6368</endBalance>
+    </record>
+    <record reference="101339">
+        <accountNumber>NL27SNSB0917829871</accountNumber>
+        <description>Tickets from Rik King</description>
+        <startBalance>84.46</startBalance>
+        <mutation>+40.45</mutation>
+        <endBalance>124.91</endBalance>
+    </record>
+</records>
