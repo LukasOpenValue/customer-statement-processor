@@ -1,6 +1,6 @@
-package nl.openvalue.CustomerStatementProcessor.util;
+package nl.openvalue.customerstatementprocessor.util;
 
-import nl.openvalue.CustomerStatementProcessor.model.Statement;
+import nl.openvalue.customerstatementprocessor.model.Statement;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +19,7 @@ import java.time.format.DateTimeFormatter;
 
 @Service
 public class ErrorFileHelper {
-    Logger logger = LoggerFactory.getLogger(ErrorFileHelper.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ErrorFileHelper.class);
 
     @Value("${errorDirectory}")
     private String errorDirectory;
@@ -37,7 +37,7 @@ public class ErrorFileHelper {
                 writer.newLine();
             }
         } catch (IOException e) {
-            logger.error("Failed to write error to file: {}", errorFile.getAbsolutePath(), e);
+            LOGGER.error("Failed to write error to file: {}", errorFile.getAbsolutePath(), e);
         }
     }
 

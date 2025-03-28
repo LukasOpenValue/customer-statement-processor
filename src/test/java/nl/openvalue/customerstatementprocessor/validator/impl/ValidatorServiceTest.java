@@ -1,6 +1,6 @@
-package nl.openvalue.CustomerStatementProcessor.validator.impl;
+package nl.openvalue.customerstatementprocessor.validator.impl;
 
-import nl.openvalue.CustomerStatementProcessor.model.Statement;
+import nl.openvalue.customerstatementprocessor.model.Statement;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -44,7 +44,7 @@ public class ValidatorServiceTest {
 
     @AfterEach
     @SuppressWarnings("unchecked")
-    void deleteTestFiles() throws IOException, NoSuchFieldException, IllegalAccessException {
+    void deleteTestFiles() throws IOException {
         FileUtils.deleteDirectory(FileUtils.getFile(RESOURCES_FOLDER + "error"));
 
         Set<Long> transactionReferences = (Set<Long>) ReflectionTestUtils.getField(ValidatorFacade.class, "TRANSACTION_REFERENCES");

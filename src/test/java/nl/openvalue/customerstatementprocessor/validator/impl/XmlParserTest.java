@@ -1,7 +1,7 @@
-package nl.openvalue.CustomerStatementProcessor.validator.impl;
+package nl.openvalue.customerstatementprocessor.validator.impl;
 
-import nl.openvalue.CustomerStatementProcessor.model.Statement;
-import nl.openvalue.CustomerStatementProcessor.parser.impl.XmlParser;
+import nl.openvalue.customerstatementprocessor.model.Statement;
+import nl.openvalue.customerstatementprocessor.parser.impl.XmlParser;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +36,13 @@ class XmlParserTest {
     @Test
     void parseInvalidXml() {
         List<Statement> statements = xmlParser.parseFile(FileUtils.getFile(RESOURCES_FOLDER + "invalid.xml"));
+        assertThat(statements).isNotNull();
+        assertThat(statements.size()).isEqualTo(0);
+    }
+
+    @Test
+    void parseEmptyXml() {
+        List<Statement> statements = xmlParser.parseFile(FileUtils.getFile(RESOURCES_FOLDER + "empty.xml"));
         assertThat(statements).isNotNull();
         assertThat(statements.size()).isEqualTo(0);
     }

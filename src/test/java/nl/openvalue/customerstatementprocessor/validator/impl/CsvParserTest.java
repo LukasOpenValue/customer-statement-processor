@@ -1,7 +1,7 @@
-package nl.openvalue.CustomerStatementProcessor.validator.impl;
+package nl.openvalue.customerstatementprocessor.validator.impl;
 
-import nl.openvalue.CustomerStatementProcessor.model.Statement;
-import nl.openvalue.CustomerStatementProcessor.parser.impl.CsvParser;
+import nl.openvalue.customerstatementprocessor.model.Statement;
+import nl.openvalue.customerstatementprocessor.parser.impl.CsvParser;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,5 +41,12 @@ class CsvParserTest {
         assertThat(statements.getFirst())
                 .extracting(Statement::reference, Statement::accountNumber, Statement::description, Statement::startBalance, Statement::mutation, Statement::endBalance)
                 .containsExactly(110784L, "NL93ABNA0585619023", "Subscription from Richard Bakker", new BigDecimal("13.89"), new BigDecimal("-46.18"), new BigDecimal("-32.29"));
+    }
+
+    @Test
+    void parseEmptyCsv() {
+        List<Statement> statements = csvParser.parseFile(FileUtils.getFile(RESOURCES_FOLDER + "empty.csv"));
+        assertThat(statements).isNotNull();
+        assertThat(statements.size()).isEqualTo(0);
     }
 }

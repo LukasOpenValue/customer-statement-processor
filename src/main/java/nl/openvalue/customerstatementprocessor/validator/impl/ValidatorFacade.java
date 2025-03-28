@@ -1,8 +1,8 @@
-package nl.openvalue.CustomerStatementProcessor.validator.impl;
+package nl.openvalue.customerstatementprocessor.validator.impl;
 
-import nl.openvalue.CustomerStatementProcessor.model.Statement;
-import nl.openvalue.CustomerStatementProcessor.util.ErrorFileHelper;
-import nl.openvalue.CustomerStatementProcessor.validator.api.ValidatorService;
+import nl.openvalue.customerstatementprocessor.model.Statement;
+import nl.openvalue.customerstatementprocessor.util.ErrorFileHelper;
+import nl.openvalue.customerstatementprocessor.validator.api.ValidatorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import java.util.Set;
 
 @Service
 public class ValidatorFacade implements ValidatorService {
-    Logger logger = LoggerFactory.getLogger(ValidatorFacade.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ValidatorFacade.class);
 
     private static final Set<Long> TRANSACTION_REFERENCES = new HashSet<>();
     private final ErrorFileHelper errorFileHelper;
@@ -34,13 +34,13 @@ public class ValidatorFacade implements ValidatorService {
 
     private void validateStatement(Statement statement) {
         if (!TRANSACTION_REFERENCES.add(statement.reference())) {
-            logger.error("Duplicate statement reference: {}", statement.reference());
+            LOGGER.error("Duplicate statement reference: {}", statement.reference());
             errorFileHelper.printErrorToFile("Duplicate statement reference.", statement);
         }
 
         BigDecimal expectedEndBalance = statement.startBalance().add(statement.mutation());
         if (!expectedEndBalance.equals(statement.endBalance())) {
-            logger.error("Invalid end balance for statement {}: expected {}, found {}",
+            LOGGER.error("Invalid end balance for statement {}: expected {}, found {}",
                     statement.reference(), expectedEndBalance, statement.endBalance());
             errorFileHelper.printErrorToFile("Invalid end balance.", statement);
         }

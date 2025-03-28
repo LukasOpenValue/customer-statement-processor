@@ -1,6 +1,6 @@
-package nl.openvalue.CustomerStatementProcessor.scheduled;
+package nl.openvalue.customerstatementprocessor.scheduled;
 
-import nl.openvalue.CustomerStatementProcessor.processor.FileProcessor;
+import nl.openvalue.customerstatementprocessor.processor.FileProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @EnableScheduling
 @Component
 public class FileProcessingScheduled {
-    private final Logger logger = LoggerFactory.getLogger(FileProcessingScheduled.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(FileProcessingScheduled.class);
 
     private final FileProcessor fileProcessor;
 
@@ -24,7 +24,7 @@ public class FileProcessingScheduled {
 
     @Scheduled(initialDelay = 5000, fixedDelay = 5000)
     public void triggerFileProcessing() {
-        logger.info("Triggering new file processing via the scheduled task.");
+        LOGGER.info("Triggering new file processing via the scheduled task.");
         fileProcessor.processFiles();
     }
 }
