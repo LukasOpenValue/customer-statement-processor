@@ -6,7 +6,7 @@ Small program to validate MT940 type xml and csv files.
 
 run ./gradlew build in the root directory of the project.
 
-### How to build the application:
+### How to run the application:
 
 run ./gradlew bootRun in the root directory of the project.
 
@@ -29,5 +29,8 @@ references and used spring batching to work through multiple files.
 I only wanted to print the validation errors that were mentioned in the assignment into the report. There could be a
 point made to have a parsing error file as well where things like missing values, wrong values and incorrect IBANs could
 be logged.
+
+The tests could have been more extensive, but I wanted to focus on the core functionality. The ValidatorFacade assumes
+that the parsing handled the data correctly so it only tests the validation.
 
 The pipeline could get extended with some additional code checks like checkstyle or sonarqube.

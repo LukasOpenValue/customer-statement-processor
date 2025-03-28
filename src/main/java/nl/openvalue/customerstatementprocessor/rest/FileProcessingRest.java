@@ -26,9 +26,8 @@ public class FileProcessingRest {
     @PostMapping(value = "/upload/csv", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> uploadCsv(@RequestParam("file") MultipartFile file) {
         LOGGER.info("Triggering new file processing via the csv REST endpoint.");
-        if (file.isEmpty()) {
-            return ResponseEntity.badRequest().body("CSV file is empty.");
-        }
+        ResponseEntity<String> body = checkFile(file, "csv");
+        if (body != null) return body;
 
         try {
             fileProcessor.processCsvFile(file);
@@ -42,9 +41,8 @@ public class FileProcessingRest {
     @PostMapping(value = "/upload/xml", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> uploadXml(@RequestParam("file") MultipartFile file) {
         LOGGER.info("Triggering new file processing via the xml REST endpoint.");
-        if (file.isEmpty()) {
-            return ResponseEntity.badRequest().body("XML file is empty.");
-        }
+        ResponseEntity<String> body = checkFile(file, "xml");
+        if (body != null) return body;
 
         try {
             fileProcessor.processXmlFile(file);
@@ -53,5 +51,17 @@ public class FileProcessingRest {
             LOGGER.error("Error processing XML file", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error processing XML file.");
         }
+    }
+
+    private ResponseEntity<String> checkFile(MultipartFile file, String fileEnding) {
+        if (file == null || file.isEmpty()) {
+            return ResponseEntity.badRequest().body(fileEnding + " file is empty.");
+        }
+
+        String filename = file.getOriginalFilename();
+        if (filename == null || !file.getOriginalFilename().endsWith(".csv")) {
+            return ResponseEntity.badRequest().body("Provided file is not a ." + fileEnding + " file.");
+        }
+        return null;
     }
 }
