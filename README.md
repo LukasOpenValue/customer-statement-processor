@@ -21,10 +21,13 @@ synchronously. The URLs for these POST endpoints are /api/files/upload/csv and /
 
 I believe in clean code and that documentation should be reflected in meaningful class, method and variable names, so
 there is no java-doc to be found. If needed of course I could provide an extensive java-doc as well.
+
 The solution using a set on the validator class to track the references was just made for time sake. I wanted a quick
 way to check the references across files. In a more fleshed out version I would have used a database to store the
 references and used spring batching to work through multiple files.
+
 I only wanted to print the validation errors that were mentioned in the assignment into the report. There could be a
 point made to have a parsing error file as well where things like missing values, wrong values and incorrect IBANs could
 be logged.
 
+The pipeline could get extended with some additional code checks like checkstyle or sonarqube.
